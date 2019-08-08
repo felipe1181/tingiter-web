@@ -1,14 +1,24 @@
 import React,{useState} from 'react';
 import './login.css'; 
+import api from '../services/api';
 import logo from '../assets/logo.svg';
 
 export default function Login({history}){
     const [username,setUsername] = useState('');
 
-    function handleSubmit(e){
+    async function handleSubmit(e){
         e.preventDefault();
         
-        
+        const response = await api.post('/developers',{
+            username
+        });
+
+        console.log(response.data); 
+
+        //TEST SESSION, IF SESSION EXISTS == REDIRECT TO MAIN, ELSE NOT EXISTS == CREATE NEW SESSION
+        if(localStorage.getItem('session') == null){
+            localStorage.setItem('session',JSON.stringify(response.data));
+        }
 
         history.push('/main');
     }
@@ -25,7 +35,7 @@ export default function Login({history}){
                 <input
                     placeholder="Digite uma senha"
                 />
-                <button type="submit">Entrar</button>
+                <button type="submit" onClick={handleSubmit}>Entrar</button>
             </form>
         </div>
     );
