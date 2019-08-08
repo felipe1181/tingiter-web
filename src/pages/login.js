@@ -9,17 +9,15 @@ export default function Login({history}){
     async function handleSubmit(e){
         e.preventDefault();
         
-        const response = await api.post('/developers',{
-            username
-        });
-
-        console.log(response.data); 
-
         //TEST SESSION, IF SESSION EXISTS == REDIRECT TO MAIN, ELSE NOT EXISTS == CREATE NEW SESSION
         if(localStorage.getItem('session') == null){
+            const response = await api.post('/developers',{
+                username
+            });
             localStorage.setItem('session',JSON.stringify(response.data));
-        }
-
+            console.log(response.data); 
+        }        
+ 
         history.push('/main');
     }
 
